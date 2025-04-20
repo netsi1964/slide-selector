@@ -14,8 +14,43 @@ A customizable slide selector web component with icon support and configurable o
 
 ## Installation
 
+### NPM
 ```bash
 npm install @netsi1964/slide-selector
+```
+
+### CDN
+You can use the component directly from a CDN:
+
+```html
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- Import the component -->
+<script type="module">
+  import { SlideSelector } from 'https://cdn.jsdelivr.net/npm/@netsi1964/slide-selector@1.0.2/+esm';
+  
+  // The component is automatically registered as 'slide-selector'
+</script>
+
+<!-- Use the component -->
+<slide-selector
+  steps='[
+    {"value":"Empty","icon":"battery-empty"},
+    {"value":"Low","icon":"battery-quarter"},
+    {"value":"Medium","icon":"battery-half"},
+    {"value":"High","icon":"battery-three-quarters"},
+    {"value":"Full","icon":"battery-full"}
+  ]'
+  label-placement="e"
+  show-icons="true"
+  value="Medium">
+</slide-selector>
+```
+
+### Deno
+```typescript
+import { SlideSelector } from "jsr:@netsi1964/slide-selector@1.0.2";
 ```
 
 ## Usage
@@ -48,6 +83,21 @@ npm install @netsi1964/slide-selector
 - `start`: Fired when dragging starts
 - `drag`: Fired during dragging
 - `end`: Fired when dragging ends
+
+### Styling
+
+You can customize the appearance using CSS variables:
+
+```css
+slide-selector {
+  --primary-color: #3b82f6;    /* Main color for active elements */
+  --primary-hover: #2563eb;    /* Color for hover states */
+  --thumb-size: 40px;          /* Size of the thumb element */
+  --rail-width: 4px;           /* Width of the slider rail */
+  height: 300px;               /* Height of the component */
+  display: block;
+}
+```
 
 ## Development
 
