@@ -1,0 +1,1147 @@
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Advanced Slide Selector with Icons</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+	<style>
+		@keyframes pulse {
+
+			0%,
+			100% {
+				transform: translate(-50%, -50%) scale(1);
+			}
+
+			50% {
+				transform: translate(-50%, -50%) scale(1.05);
+			}
+		}
+
+		.thumb-pulse {
+			animation: pulse 1.5s infinite;
+		}
+
+		.settings-panel {
+			transition: all 0.3s ease;
+			max-height: 0;
+			overflow: hidden;
+		}
+
+		.settings-panel.open {
+			max-height: 500px;
+		}
+
+		.event-log {
+			max-height: 200px;
+			overflow-y: auto;
+		}
+
+		.event-item {
+			border-left: 3px solid #3b82f6;
+		}
+
+		.thumb-icon {
+			font-size: 18px;
+			opacity: 1;
+			transition: color 0.2s ease;
+			font-family: "Font Awesome 6 Free";
+			font-weight: 900;
+			-webkit-font-smoothing: antialiased;
+			display: inline-block;
+			font-style: normal;
+			font-variant: normal;
+			text-rendering: auto;
+			line-height: 1;
+			color: var(--primary-color);
+		}
+
+		.thumb:hover .thumb-icon {
+			color: var(--primary-hover);
+		}
+
+		.demo-container {
+			transition: all 0.3s ease;
+		}
+
+		.demo-container.selected {
+			box-shadow: 0 0 0 2px #3b82f6;
+			background-color: #f8fafc;
+		}
+
+		.demo-container:hover {
+			cursor: pointer;
+			background-color: #f8fafc;
+		}
+
+		.code-preview {
+			position: relative;
+			background: #f8fafc;
+			border-radius: 8px;
+			border: 1px solid #e2e8f0;
+		}
+
+		.code-preview pre {
+			margin: 0;
+			padding: 1rem;
+			max-height: 300px;
+			overflow-y: auto;
+		}
+
+		.copy-button {
+			position: absolute;
+			top: 0.5rem;
+			right: 0.5rem;
+			padding: 0.5rem;
+			background: white;
+			border: 1px solid #e2e8f0;
+			border-radius: 6px;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			font-size: 0.875rem;
+			color: #4b5563;
+		}
+
+		.copy-button:hover {
+			background: #f1f5f9;
+		}
+
+		.copy-button.copied {
+			background: #10b981;
+			color: white;
+			border-color: #059669;
+		}
+	</style>
+</head>
+
+<body class="bg-gray-100 min-h-screen p-4">
+	<div class="max-w-6xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+		<div class="p-6 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+			<h1 class="text-3xl font-bold">Advanced Slide Selector</h1>
+			<p class="mt-2 opacity-90">Interactive slider with icons and configurable options</p>
+		</div>
+
+		<!-- Code Preview Section -->
+		<div class="p-6 border-b border-gray-200">
+			<div class="flex items-center justify-between mb-4">
+				<h2 class="text-xl font-semibold text-gray-800">Selected Component Code</h2>
+				<div class="text-sm text-gray-600">Copy and use this code to implement the selected slider</div>
+			</div>
+			<div class="code-preview">
+				<pre><code class="language-html" id="component-code"></code></pre>
+				<button class="copy-button" onclick="copyCode()">
+					<i class="fas fa-copy"></i>
+					<span>Copy Code</span>
+				</button>
+			</div>
+		</div>
+
+		<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
+			<!-- Main demo area -->
+			<div class="lg:col-span-2 space-y-6">
+				<div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+					<div class="flex justify-between items-center mb-4">
+						<h2 class="text-xl font-semibold text-gray-800">Interactive Demo</h2>
+					</div>
+
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+						<div class="demo-container bg-white p-4 rounded-lg border border-gray-200">
+							<div class="flex justify-between items-center mb-3">
+								<h3 class="font-medium text-gray-700">Demo 1</h3>
+							</div>
+
+							<slide-selector id="battery-selector" style="height: 300px; display: block;"
+								steps='[{"value":"Empty","icon":"battery-empty"},{"value":"Low","icon":"battery-quarter"},{"value":"Medium","icon":"battery-half"},{"value":"High","icon":"battery-three-quarters"},{"value":"Full","icon":"battery-full"}]'
+								label-placement="e" show-icons="true" value="Medium"></slide-selector>
+						</div>
+
+						<div class="demo-container bg-white p-4 rounded-lg border border-gray-200">
+							<div class="flex justify-between items-center mb-3">
+								<h3 class="font-medium text-gray-700">Demo 2</h3>
+							</div>
+
+							<slide-selector id="temp-selector" style="height: 300px; display: block;"
+								steps='[{"value":"Freezing","icon":"temperature-low"},{"value":"Cold","icon":"snowflake"},{"value":"Cool","icon":"wind"},{"value":"Warm","icon":"temperature-high"},{"value":"Hot","icon":"fire"}]'
+								label-placement="n" show-icons="true" value="Warm"></slide-selector>
+						</div>
+
+						<div class="demo-container bg-white p-4 rounded-lg border border-gray-200">
+							<div class="flex justify-between items-center mb-3">
+								<h3 class="font-medium text-gray-700">Demo 3</h3>
+							</div>
+
+							<slide-selector id="speed-selector" style="height: 300px; display: block;"
+								steps='[{"value":"Slow","icon":"clock"},{"value":"Medium","icon":"person-walking"},{"value":"Fast","icon":"person-running"},{"value":"Turbo","icon":"rocket"}]'
+								label-placement="w" show-icons="true" value="Medium"></slide-selector>
+						</div>
+
+						<div class="demo-container bg-white p-4 rounded-lg border border-gray-200">
+							<div class="flex justify-between items-center mb-3">
+								<h3 class="font-medium text-gray-700">Demo 4</h3>
+							</div>
+
+							<slide-selector id="volume-selector" style="height: 300px; display: block;"
+								steps='[{"value":"Mute","icon":"volume-xmark"},{"value":"Low","icon":"volume-low"},{"value":"Medium","icon":"volume-low"},{"value":"High","icon":"volume-high"},{"value":"Max","icon":"volume-up"}]'
+								label-placement="s" show-icons="true" value="Medium"></slide-selector>
+						</div>
+					</div>
+
+					<div class="mt-6 bg-white p-4 rounded-lg border border-gray-200">
+						<h3 class="font-medium text-gray-700 mb-3">Controls</h3>
+						<div class="flex flex-wrap gap-3">
+							<button id="prev-btn"
+								class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-gray-700 transition flex items-center">
+								<i class="fas fa-arrow-left mr-2"></i>Previous
+							</button>
+							<button id="next-btn"
+								class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-gray-700 transition flex items-center">
+								Next<i class="fas fa-arrow-right ml-2"></i>
+							</button>
+							<button id="random-btn"
+								class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition flex items-center">
+								<i class="fas fa-random mr-2"></i>Random
+							</button>
+							<button id="reset-btn"
+								class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-gray-700 transition flex items-center">
+								<i class="fas fa-undo mr-2"></i>Reset
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Settings and events panel -->
+			<div class="space-y-6">
+				<div class="bg-white p-4 rounded-lg border border-gray-200">
+					<h2 class="text-xl font-semibold text-gray-800 mb-4">Component Settings</h2>
+
+					<div class="space-y-4">
+						<div>
+							<h3 class="font-medium text-gray-700 mb-2">Display Settings</h3>
+							<div class="grid grid-cols-1 gap-3">
+								<div>
+									<label class="block text-sm font-medium text-gray-700 mb-1">Label Position</label>
+									<select id="global-label-placement" class="w-full p-2 border rounded text-sm">
+										<option value="n">North</option>
+										<option value="s">South</option>
+										<option value="e">East</option>
+										<option value="w">West</option>
+										<option value="nw">Northwest</option>
+										<option value="ne">Northeast</option>
+										<option value="sw">Southwest</option>
+										<option value="se">Southeast</option>
+									</select>
+								</div>
+								<div>
+									<label class="block text-sm font-medium text-gray-700 mb-1">Show Icons</label>
+									<select id="global-show-icons" class="w-full p-2 border rounded text-sm">
+										<option value="true">Yes</option>
+										<option value="false">No</option>
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="mb-4">
+							<h3 class="font-medium text-gray-700 mb-2">Preset Enumerations</h3>
+							<select id="preset-select" class="w-full p-2 border rounded">
+								<option value="">Select a preset...</option>
+								<option value="battery">Battery Levels</option>
+								<option value="temperature">Temperature Levels</option>
+								<option value="speed">Speed Levels</option>
+								<option value="volume">Volume Levels</option>
+								<option value="brightness">Brightness Levels</option>
+								<option value="security">Security Levels</option>
+							</select>
+						</div>
+
+						<div class="mb-4">
+							<h3 class="font-medium text-gray-700 mb-2">Custom Steps</h3>
+							<textarea id="custom-steps" class="w-full p-2 border rounded text-sm h-24"
+								placeholder='[{"value":"Option 1","icon":"circle"},{"value":"Option 2","icon":"square"}]'></textarea>
+							<button id="apply-custom"
+								class="mt-2 px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm">
+								Apply Custom Steps
+							</button>
+						</div>
+
+						<div>
+							<h3 class="font-medium text-gray-700 mb-2">Active Selector Properties</h3>
+							<div class="bg-gray-50 p-3 rounded text-sm">
+								<div class="grid grid-cols-2 gap-2">
+									<div class="font-medium">Current Value:</div>
+									<div id="prop-value">Medium</div>
+
+									<div class="font-medium">Current Icon:</div>
+									<div id="prop-icon"><i class="fas fa-battery-half"></i> battery-half</div>
+
+									<div class="font-medium">Label Position:</div>
+									<div id="prop-label-pos">East</div>
+
+									<div class="font-medium">Show Icons:</div>
+									<div id="prop-show-icons">Yes</div>
+
+									<div class="font-medium">Steps Count:</div>
+									<div id="prop-steps-count">5</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="bg-white p-4 rounded-lg border border-gray-200">
+					<h2 class="text-xl font-semibold text-gray-800 mb-4">Event Log</h2>
+					<div class="event-log bg-gray-50 p-3 rounded text-sm space-y-2">
+						<div class="event-item pl-2 py-1 bg-blue-50">
+							<div class="font-medium">Component initialized</div>
+							<div class="text-xs text-gray-500">Battery selector loaded with 5 steps</div>
+						</div>
+					</div>
+					<button id="clear-events" class="mt-3 px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-sm">
+						Clear Events
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		class SlideSelector extends HTMLElement {
+			constructor() {
+				super();
+				this.attachShadow({
+					mode: "open"
+				});
+				this.steps = JSON.parse(this.getAttribute("steps") || "[]");
+				this.labelPlacement = this.getAttribute("label-placement") || "e";
+				this.showIcons = this.getAttribute("show-icons") === "true";
+				this.value = this.getAttribute("value");
+				// Find index based on value if provided, otherwise use middle
+				this.index = this.value ? 
+					this.steps.findIndex(step => step.value === this.value) : 
+					Math.floor(this.steps.length / 2);
+				// If value wasn't found, fallback to middle
+				if (this.index === -1) this.index = Math.floor(this.steps.length / 2);
+				this.dragging = false;
+				this.lastY = 0;
+				this.velocity = 0;
+				this.animationFrame = null;
+				// Bind event handlers to maintain context
+				this.startDrag = this.startDrag.bind(this);
+				this.onDrag = this.onDrag.bind(this);
+				this.endDrag = this.endDrag.bind(this);
+			}
+			static get observedAttributes() {
+				return ['steps', 'label-placement', 'show-icons', 'value'];
+			}
+			attributeChangedCallback(name, oldValue, newValue) {
+				if (name === 'steps' && newValue) {
+					this.steps = JSON.parse(newValue);
+					this.index = this.value ? 
+						this.steps.findIndex(step => step.value === this.value) : 
+						Math.floor(this.steps.length / 2);
+					if (this.index === -1) this.index = Math.floor(this.steps.length / 2);
+					this.render();
+					this.reconnectEvents();
+				} else if (name === 'label-placement' && newValue) {
+					this.labelPlacement = newValue;
+					this.render();
+				} else if (name === 'show-icons') {
+					this.showIcons = newValue === "true";
+					this.render();
+				} else if (name === 'value' && newValue) {
+					this.value = newValue;
+					const newIndex = this.steps.findIndex(step => step.value === newValue);
+					if (newIndex !== -1 && newIndex !== this.index) {
+						this.index = newIndex;
+						this.render();
+					}
+				}
+			}
+			connectedCallback() {
+				this.render();
+				this.thumb = this.shadowRoot.querySelector(".thumb");
+				this.label = this.shadowRoot.querySelector(".label");
+				this.rail = this.shadowRoot.querySelector(".rail");
+				this.dots = this.shadowRoot.querySelectorAll(".dot");
+				this.addEventListeners();
+				new ResizeObserver(() => this.updateThumb()).observe(this);
+				this.updateThumb();
+
+				// Add click handlers for dots
+				this.dots.forEach((dot, index) => {
+					dot.addEventListener('click', () => {
+						this.setIndex(index);
+					});
+				});
+			}
+			disconnectedCallback() {
+				this.removeEventListeners();
+			}
+			addEventListeners() {
+				this.thumb.addEventListener("mousedown", this.startDrag);
+				this.thumb.addEventListener("touchstart", this.startDrag, {
+					passive: false
+				});
+				window.addEventListener("mousemove", this.onDrag);
+				window.addEventListener("touchmove", this.onDrag, {
+					passive: false
+				});
+				window.addEventListener("mouseup", this.endDrag);
+				window.addEventListener("touchend", this.endDrag);
+			}
+			removeEventListeners() {
+				this.thumb.removeEventListener("mousedown", this.startDrag);
+				this.thumb.removeEventListener("touchstart", this.startDrag);
+				window.removeEventListener("mousemove", this.onDrag);
+				window.removeEventListener("touchmove", this.onDrag);
+				window.removeEventListener("mouseup", this.endDrag);
+				window.removeEventListener("touchend", this.endDrag);
+			}
+			reconnectEvents() {
+				this.removeEventListeners();
+				this.thumb = this.shadowRoot.querySelector(".thumb");
+				this.addEventListeners();
+			}
+			getLabelPositionStyles() {
+				const baseStyles = {
+					position: 'absolute',
+					background: 'white',
+					color: 'var(--primary-color)',
+					padding: '4px 12px',
+					borderRadius: '20px',
+					fontSize: '12px',
+					fontWeight: '500',
+					whiteSpace: 'nowrap',
+					opacity: '0',
+					transition: 'opacity 0.2s ease',
+					pointerEvents: 'none',
+					zIndex: '100',
+					boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+					border: '1px solid #e5e7eb'
+				};
+
+				const spacing = '12px';
+
+				switch (this.labelPlacement.toLowerCase()) {
+					case 'n':
+						return {
+							...baseStyles,
+							left: '50%',
+							bottom: 'calc(100% + 8px)',
+							transform: 'translateX(-50%)'
+						};
+					case 's':
+						return {
+							...baseStyles,
+							left: '50%',
+							top: 'calc(100% + 8px)',
+							transform: 'translateX(-50%)'
+						};
+					case 'e':
+						return {
+							...baseStyles,
+							left: `calc(100% + ${spacing})`,
+							top: '50%',
+							transform: 'translateY(-50%)'
+						};
+					case 'w':
+						return {
+							...baseStyles,
+							right: `calc(100% + ${spacing})`,
+							top: '50%',
+							transform: 'translateY(-50%)'
+						};
+					case 'nw':
+						return {
+							...baseStyles,
+							right: `calc(100% + ${spacing})`,
+							bottom: `calc(100% + ${spacing})`,
+							transform: 'none'
+						};
+					case 'ne':
+						return {
+							...baseStyles,
+							left: `calc(100% + ${spacing})`,
+							bottom: `calc(100% + ${spacing})`,
+							transform: 'none'
+						};
+					case 'sw':
+						return {
+							...baseStyles,
+							right: `calc(100% + ${spacing})`,
+							top: `calc(100% + ${spacing})`,
+							transform: 'none'
+						};
+					case 'se':
+						return {
+							...baseStyles,
+							left: `calc(100% + ${spacing})`,
+							top: `calc(100% + ${spacing})`,
+							transform: 'none'
+						};
+					default:
+						return {
+							...baseStyles,
+							left: `calc(100% + ${spacing})`,
+							top: '50%',
+							transform: 'translateY(-50%)'
+						};
+				}
+			}
+			render() {
+				const style = `
+          @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+          
+          :host {
+            display: inline-block;
+            width: 80px;
+            height: 100%;
+            position: relative;
+            font-family: system-ui, -apple-system, sans-serif;
+            --primary-color: #3b82f6;
+            --primary-hover: #2563eb;
+            padding: 20px;
+            margin: 20px;
+          }
+
+          .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+          }
+
+          .rail {
+            position: absolute;
+            top: 20px;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            background: #e5e7eb;
+            border-radius: 999px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1;
+          }
+          .dot {
+            width: 24px;
+            height: 24px;
+            background: transparent;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+          }
+          .dot::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #d1d5db;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+          }
+          .dot.active::after {
+            background: var(--primary-color);
+            transform: scale(1.3);
+          }
+          .dot-icon {
+            font-size: 16px;
+            color: #6b7280;
+            opacity: ${this.showIcons ? '1' : '0'};
+            transition: all 0.2s ease;
+            z-index: 1;
+            background: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+          }
+          .dot:hover .dot-icon {
+            transform: scale(1.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: var(--primary-color);
+          }
+          .dot.active .dot-icon {
+            color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          }
+          .thumb {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 50%;
+            border: 2px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease, top 0.1s linear;
+            font-size: 20px;
+            color: var(--primary-color);
+          }
+          .thumb:hover {
+            background: #f8fafc;
+            border-color: var(--primary-hover);
+            color: var(--primary-hover);
+          }
+          .thumb.dragging {
+            cursor: grabbing;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+          }
+          .label {
+            ${Object.entries(this.getLabelPositionStyles()).map(([prop, value]) => `${prop}: ${value};`).join('')}
+          }
+          .thumb:hover .label {
+            opacity: 1;
+          }
+          .thumb.dragging .label {
+            opacity: 1;
+          }
+          .thumb-icon {
+            font-size: 18px;
+            opacity: 1;
+            transition: color 0.2s ease;
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            -webkit-font-smoothing: antialiased;
+            display: inline-block;
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            line-height: 1;
+            color: var(--primary-color);
+          }
+          .thumb:hover .thumb-icon {
+            color: var(--primary-hover);
+          }
+        `;
+				const html = `
+          <div class="container">
+            <div class="rail">
+              ${this.steps.map((step, i) => `
+                <div class="dot ${i === this.index ? 'active' : ''}" title="${step.value}">
+                  <i class="fas fa-${step.icon} dot-icon"></i>
+                </div>
+              `).join("")}
+            </div>
+            <div class="thumb">
+              <i class="thumb-icon fas fa-${this.steps[this.index]?.icon}"></i>
+              <div class="label">${this.steps[this.index]?.value || ''}</div>
+            </div>
+          </div>
+        `;
+				this.shadowRoot.innerHTML = `<style>${style}</style>${html}`;
+
+				// Update element references after re-rendering
+				this.thumb = this.shadowRoot.querySelector(".thumb");
+				this.label = this.shadowRoot.querySelector(".label");
+				this.rail = this.shadowRoot.querySelector(".rail");
+				this.dots = this.shadowRoot.querySelectorAll(".dot");
+
+				// Reattach event listeners
+				this.removeEventListeners();
+				this.addEventListeners();
+
+				// Update thumb position and icon
+				this.updateThumb();
+			}
+			updateThumb() {
+				if (!this.rail) return;
+				const railRect = this.rail.getBoundingClientRect();
+				const stepHeight = railRect.height / (this.steps.length - 1);
+				const offset = stepHeight * this.index;
+				this.thumb.style.top = `${offset + 20}px`;
+				this.label.textContent = this.steps[this.index]?.value || '';
+				
+				// Update the thumb icon to match current step
+				const thumbIcon = this.shadowRoot.querySelector('.thumb-icon');
+				if (thumbIcon) {
+					thumbIcon.className = `fas fa-${this.steps[this.index]?.icon} thumb-icon`;
+				}
+
+				this.dots?.forEach((dot, i) => {
+					dot.classList.toggle('active', i === this.index);
+					const dotIcon = dot.querySelector('.dot-icon');
+					if (dotIcon) {
+						dotIcon.className = `fas fa-${this.steps[i]?.icon} dot-icon`;
+					}
+				});
+
+				this.dispatchEvent(new CustomEvent("change", {
+					detail: {
+						index: this.index,
+						value: this.steps[this.index]?.value,
+						icon: this.steps[this.index]?.icon
+					}
+				}));
+			}
+			startDrag(e) {
+				e.preventDefault();
+				this.dragging = true;
+				this.thumb.classList.add("dragging");
+				this.lastY = e.clientY || e.touches[0].clientY;
+				this.velocity = 0;
+				this.dispatchEvent(new CustomEvent("start", {
+					detail: {
+						index: this.index
+					}
+				}));
+				document.body.style.userSelect = "none";
+				document.body.style.touchAction = "none";
+			}
+			onDrag(e) {
+				if (!this.dragging) return;
+				e.preventDefault();
+				const y = e.clientY || e.touches[0].clientY;
+				this.velocity = y - this.lastY;
+				this.lastY = y;
+				const railRect = this.rail.getBoundingClientRect();
+				let relativeY = y - railRect.top;
+				relativeY = Math.max(0, Math.min(railRect.height, relativeY));
+				const step = Math.round(relativeY / (railRect.height / (this.steps.length - 1)));
+				if (step !== this.index) {
+					this.index = step;
+					this.updateThumb();
+					this.dispatchEvent(new CustomEvent("drag", {
+						detail: {
+							index: this.index
+						}
+					}));
+				}
+			}
+			endDrag() {
+				if (!this.dragging) return;
+				this.dragging = false;
+				this.thumb.classList.remove("dragging");
+				if (Math.abs(this.velocity) > 5) {
+					const direction = this.velocity > 0 ? 1 : -1;
+					const stepsToMove = Math.min(Math.floor(Math.abs(this.velocity) / 10), 2);
+					this.setIndex(this.index + (direction * stepsToMove));
+				}
+				this.dispatchEvent(new CustomEvent("end", {
+					detail: {
+						index: this.index
+					}
+				}));
+				document.body.style.userSelect = "";
+				document.body.style.touchAction = "";
+			}
+			setIndex(index) {
+				const newIndex = Math.max(0, Math.min(this.steps.length - 1, index));
+				if (newIndex !== this.index) {
+					this.index = newIndex;
+					this.thumb.classList.add('thumb-pulse');
+					setTimeout(() => {
+						this.thumb.classList.remove('thumb-pulse');
+					}, 1500);
+					this.updateThumb();
+				}
+			}
+			getIndex() {
+				return this.index;
+			}
+			getValue() {
+				return this.steps[this.index]?.value;
+			}
+			getIcon() {
+				return this.steps[this.index]?.icon;
+			}
+			setSteps(newSteps) {
+				this.steps = newSteps;
+				this.index = Math.floor(this.steps.length / 2);
+				this.render();
+			}
+			setLabelPlacement(placement) {
+				this.labelPlacement = placement;
+				this.setAttribute('label-placement', placement);
+				this.render();
+			}
+			setShowIcons(show) {
+				this.showIcons = show;
+				this.setAttribute('show-icons', show.toString());
+				this.render();
+			}
+		}
+		customElements.define("slide-selector", SlideSelector);
+		// Demo interaction
+		document.addEventListener('DOMContentLoaded', () => {
+			const selectors = {
+				battery: document.getElementById("battery-selector"),
+				temp: document.getElementById("temp-selector"),
+				speed: document.getElementById("speed-selector"),
+				volume: document.getElementById("volume-selector")
+			};
+			const currentValue = document.getElementById("current-value");
+			const prevBtn = document.getElementById("prev-btn");
+			const nextBtn = document.getElementById("next-btn");
+			const randomBtn = document.getElementById("random-btn");
+			const resetBtn = document.getElementById("reset-btn");
+			const clearEvents = document.getElementById("clear-events");
+			const presetSelect = document.getElementById("preset-select");
+			const customSteps = document.getElementById("custom-steps");
+			const applyCustom = document.getElementById("apply-custom");
+			// Property display elements
+			const propValue = document.getElementById("prop-value");
+			const propIcon = document.getElementById("prop-icon");
+			const propLabelPos = document.getElementById("prop-label-pos");
+			const propShowIcons = document.getElementById("prop-show-icons");
+			const propStepsCount = document.getElementById("prop-steps-count");
+			// Event log
+			const eventLog = document.querySelector(".event-log");
+			// Track the active selector
+			let activeSelector = selectors.battery;
+			// Update settings for active selector using global controls
+			const globalLabelPlacement = document.getElementById("global-label-placement");
+			const globalShowIcons = document.getElementById("global-show-icons");
+
+			globalLabelPlacement.addEventListener("change", function() {
+				if (activeSelector) {
+					activeSelector.setLabelPlacement(this.value);
+					updateCodePreview(activeSelector);
+					logEvent(activeSelector, `Label position changed to ${getLabelPositionName(this.value)}`);
+					updateProperties(activeSelector);
+				}
+			});
+
+			globalShowIcons.addEventListener("change", function() {
+				if (activeSelector) {
+					activeSelector.setShowIcons(this.value === "true");
+					updateCodePreview(activeSelector);
+					logEvent(activeSelector, `Show icons set to ${this.value === "true" ? "Yes" : "No"}`);
+					updateProperties(activeSelector);
+				}
+			});
+
+			// Update display when selector changes
+			Object.values(selectors).forEach(selector => {
+				selector.addEventListener("change", (e) => {
+					if (selector === activeSelector) {
+						updateProperties(selector);
+						// Update custom steps when value changes
+						customSteps.value = JSON.stringify(selector.steps, null, 2);
+					}
+					logEvent(selector, `Value changed to ${e.detail.value}`);
+				});
+				selector.addEventListener("start", (e) => {
+					activeSelector = selector;
+					logEvent(selector, `Drag started at index ${e.detail.index}`);
+				});
+				selector.addEventListener("drag", (e) => {
+					logEvent(selector, `Dragging at index ${e.detail.index}`, true);
+				});
+				selector.addEventListener("end", (e) => {
+					logEvent(selector, `Drag ended at index ${e.detail.index}`);
+				});
+			});
+			// Button controls
+			prevBtn.addEventListener("click", () => {
+				activeSelector.setIndex(activeSelector.getIndex() - 1);
+				logEvent(activeSelector, `Previous button pressed - index now ${activeSelector.getIndex()}`);
+			});
+			nextBtn.addEventListener("click", () => {
+				activeSelector.setIndex(activeSelector.getIndex() + 1);
+				logEvent(activeSelector, `Next button pressed - index now ${activeSelector.getIndex()}`);
+			});
+			randomBtn.addEventListener("click", () => {
+				const randomIndex = Math.floor(Math.random() * activeSelector.steps.length);
+				activeSelector.setIndex(randomIndex);
+				logEvent(activeSelector, `Random button pressed - index now ${randomIndex}`);
+			});
+			resetBtn.addEventListener("click", () => {
+				const middleIndex = Math.floor(activeSelector.steps.length / 2);
+				activeSelector.setIndex(middleIndex);
+				logEvent(activeSelector, `Reset button pressed - index now ${middleIndex}`);
+			});
+			clearEvents.addEventListener("click", () => {
+				eventLog.innerHTML = '<div class="event-item pl-2 py-1 bg-blue-50">' +
+					'<div class="font-medium">Event log cleared</div>' +
+					'<div class="text-xs text-gray-500">' + new Date().toLocaleTimeString() + '</div></div>';
+			});
+			// Preset selection
+			presetSelect.addEventListener("change", function () {
+				if (!this.value) return;
+				let steps;
+				switch (this.value) {
+					case 'battery':
+						steps = [{
+							value: "Empty",
+							icon: "battery-empty"
+						},
+						{
+							value: "Low",
+							icon: "battery-quarter"
+						},
+						{
+							value: "Medium",
+							icon: "battery-half"
+						},
+						{
+							value: "High",
+							icon: "battery-three-quarters"
+						},
+						{
+							value: "Full",
+							icon: "battery-full"
+						}
+						];
+						break;
+					case 'temperature':
+						steps = [{
+							value: "Freezing",
+							icon: "temperature-low"
+						},
+						{
+							value: "Cold",
+							icon: "snowflake"
+						},
+						{
+							value: "Cool",
+							icon: "wind"
+						},
+						{
+							value: "Warm",
+							icon: "temperature-high"
+						},
+						{
+							value: "Hot",
+							icon: "fire"
+						}
+						];
+						break;
+					case 'speed':
+						steps = [{
+							value: "Slow",
+							icon: "clock"
+						},
+						{
+							value: "Medium",
+							icon: "person-walking"
+						},
+						{
+							value: "Fast",
+							icon: "person-running"
+						},
+						{
+							value: "Turbo",
+							icon: "rocket"
+						}
+						];
+						break;
+					case 'volume':
+						steps = [{
+							value: "Mute",
+							icon: "volume-xmark"
+						},
+						{
+							value: "Low",
+							icon: "volume-low"
+						},
+						{
+							value: "Medium",
+							icon: "volume-low"
+						},
+						{
+							value: "High",
+							icon: "volume-high"
+						},
+						{
+							value: "Max",
+							icon: "volume-up"
+						}
+						];
+						break;
+					case 'brightness':
+						steps = [{
+							value: "Off",
+							icon: "lightbulb"
+						},
+						{
+							value: "Dim",
+							icon: "moon"
+						},
+						{
+							value: "Medium",
+							icon: "cloud-sun"
+						},
+						{
+							value: "Bright",
+							icon: "sun"
+						},
+						{
+							value: "Max",
+							icon: "radiation"
+						}
+						];
+						break;
+					case 'security':
+						steps = [{
+							value: "Low",
+							icon: "lock-open"
+						},
+						{
+							value: "Medium",
+							icon: "lock"
+						},
+						{
+							value: "High",
+							icon: "shield-alt"
+						},
+						{
+							value: "Maximum",
+							icon: "shield-virus"
+						}
+						];
+						break;
+				}
+				activeSelector.setSteps(steps);
+				logEvent(activeSelector, `Preset "${this.options[this.selectedIndex].text}" loaded with ${steps.length} steps`);
+				updateProperties(activeSelector);
+				this.value = "";
+			});
+			// Custom steps
+			applyCustom.addEventListener("click", function () {
+				try {
+					const steps = JSON.parse(customSteps.value);
+					if (!Array.isArray(steps)) throw new Error("Steps must be an array");
+					activeSelector.setSteps(steps);
+					updateCodePreview(activeSelector);
+					logEvent(activeSelector, `Custom steps applied with ${steps.length} items`);
+					updateProperties(activeSelector);
+					customSteps.value = "";
+				} catch (e) {
+					logEvent(activeSelector, `Error applying custom steps: ${e.message}`, false, true);
+				}
+			});
+			// Helper functions
+			function logEvent(selector, message, isUpdate = false, isError = false) {
+				if (isUpdate) {
+					// Update last event instead of adding new one
+					const lastEvent = eventLog.lastElementChild;
+					if (lastEvent) {
+						lastEvent.querySelector('div:first-child').textContent = message;
+						lastEvent.querySelector('div:last-child').textContent = new Date().toLocaleTimeString();
+						return;
+					}
+				}
+				const eventItem = document.createElement('div');
+				eventItem.className = `event-item pl-2 py-1 ${isError ? 'bg-red-50' : 'bg-blue-50'}`;
+				eventItem.innerHTML = `
+          <div class="font-medium">${message}</div>
+          <div class="text-xs text-gray-500">${new Date().toLocaleTimeString()} - ${selector.id}</div>
+        `;
+				eventLog.appendChild(eventItem);
+				eventLog.scrollTop = eventLog.scrollHeight;
+			}
+
+			function updateProperties(selector) {
+				propValue.textContent = selector.getValue();
+				propIcon.innerHTML = `<i class="fas fa-${selector.getIcon()}"></i> ${selector.getIcon()}`;
+				propLabelPos.textContent = getLabelPositionName(selector.labelPlacement);
+				propShowIcons.textContent = selector.showIcons ? "Yes" : "No";
+				propStepsCount.textContent = selector.steps.length;
+			}
+
+			function getLabelPositionName(placement) {
+				const positions = {
+					'n': 'North',
+					's': 'South',
+					'e': 'East',
+					'w': 'West',
+					'nw': 'Northwest',
+					'ne': 'Northeast',
+					'sw': 'Southwest',
+					'se': 'Southeast'
+				};
+				return positions[placement] || placement;
+			}
+			// Initial setup
+			updateProperties(activeSelector); 
+			logEvent(activeSelector, "Component initialized");
+
+			// Add click handlers for demo containers
+			document.querySelectorAll('.demo-container').forEach(container => {
+				container.addEventListener('click', () => {
+					// Remove selected class from all containers
+					document.querySelectorAll('.demo-container').forEach(c => c.classList.remove('selected'));
+					// Add selected class to clicked container
+					container.classList.add('selected');
+					// Update active selector
+					const selector = container.querySelector('slide-selector');
+					activeSelector = selector;
+					// Update properties display
+					updateProperties(selector);
+					// Update custom steps textarea with current steps
+					customSteps.value = JSON.stringify(selector.steps, null, 2);
+					// Update global controls to match selected selector
+					globalLabelPlacement.value = selector.labelPlacement;
+					globalShowIcons.value = selector.showIcons.toString();
+					// Update code preview
+					updateCodePreview(selector);
+					logEvent(selector, `Selected ${container.querySelector('h3').textContent}`);
+				});
+			});
+
+			function updateCodePreview(selector) {
+				const steps = JSON.stringify(selector.steps)
+					.replace(/'/g, '"'); // Ensure we're using double quotes for JSON
+				
+				const code = `<slide-selector
+  style="height: 300px; display: block;"
+  steps='${steps}'
+  label-placement="${selector.labelPlacement}"
+  show-icons="${selector.showIcons}"
+  value="${selector.getValue()}">
+</slide-selector>`;
+
+				const codeElement = document.getElementById('component-code');
+				codeElement.textContent = code;
+				Prism.highlightElement(codeElement);
+			}
+
+			window.copyCode = function() {
+				const code = document.getElementById('component-code').textContent;
+				navigator.clipboard.writeText(code).then(() => {
+					const copyButton = document.querySelector('.copy-button');
+					copyButton.classList.add('copied');
+					copyButton.innerHTML = '<i class="fas fa-check"></i><span>Copied!</span>';
+					setTimeout(() => {
+						copyButton.classList.remove('copied');
+						copyButton.innerHTML = '<i class="fas fa-copy"></i><span>Copy Code</span>';
+					}, 2000);
+				});
+			}
+
+			// Select first demo container by default
+			document.querySelector('.demo-container').click();
+		});
+	</script>
+	
+	
+	
+</body>
+
+</html>
