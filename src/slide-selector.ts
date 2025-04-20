@@ -1,10 +1,12 @@
+import './style.css';
+
 /**
  * A customizable vertical slide selector web component with icon support.
  * 
  * This component provides a vertical slider with customizable steps, each having a value and an associated icon.
  * It supports touch and mouse interactions, smooth animations, and configurable label placement.
  * 
- * @example
+ * @example Basic Usage
  * ```html
  * <slide-selector
  *   steps='[
@@ -18,12 +20,78 @@
  * </slide-selector>
  * ```
  * 
+ * @example Styling
+ * ```css
+ * slide-selector {
+ *   --primary-color: #3b82f6;
+ *   --primary-hover: #2563eb;
+ *   --thumb-size: 40px;
+ *   --rail-width: 4px;
+ *   height: 300px;
+ *   display: block;
+ * }
+ * ```
+ * 
+ * @example Event Handling
+ * ```javascript
+ * const selector = document.querySelector('slide-selector');
+ * 
+ * selector.addEventListener('change', (e) => {
+ *   const { index, value, icon } = e.detail;
+ *   console.log(`Selected: ${value} (${icon}) at index ${index}`);
+ * });
+ * 
+ * selector.addEventListener('start', (e) => {
+ *   console.log('Started dragging at index:', e.detail.index);
+ * });
+ * 
+ * selector.addEventListener('drag', (e) => {
+ *   console.log('Dragging at index:', e.detail.index);
+ * });
+ * 
+ * selector.addEventListener('end', (e) => {
+ *   console.log('Ended dragging at index:', e.detail.index);
+ * });
+ * ```
+ * 
+ * @example Different Label Placements
+ * ```html
+ * <!-- East placement (right) -->
+ * <slide-selector label-placement="e"></slide-selector>
+ * 
+ * <!-- West placement (left) -->
+ * <slide-selector label-placement="w"></slide-selector>
+ * 
+ * <!-- North placement (top) -->
+ * <slide-selector label-placement="n"></slide-selector>
+ * 
+ * <!-- South placement (bottom) -->
+ * <slide-selector label-placement="s"></slide-selector>
+ * 
+ * <!-- Corner placements -->
+ * <slide-selector label-placement="ne"></slide-selector>
+ * <slide-selector label-placement="nw"></slide-selector>
+ * <slide-selector label-placement="se"></slide-selector>
+ * <slide-selector label-placement="sw"></slide-selector>
+ * ```
+ * 
  * @module
  */
 
 /**
  * Represents a single step in the slide selector.
  * Each step has a value and an associated Font Awesome icon name.
+ * 
+ * @example
+ * ```javascript
+ * const steps = [
+ *   { value: "Empty", icon: "battery-empty" },
+ *   { value: "Low", icon: "battery-quarter" },
+ *   { value: "Medium", icon: "battery-half" },
+ *   { value: "High", icon: "battery-three-quarters" },
+ *   { value: "Full", icon: "battery-full" }
+ * ];
+ * ```
  */
 interface Step {
   /** The text value displayed for this step */
@@ -35,6 +103,8 @@ interface Step {
 /**
  * Interface for label positioning styles.
  * These styles are used to position and style the label that appears when hovering over steps.
+ * The component uses these styles to create a consistent and attractive label appearance
+ * across all label placement options.
  */
 interface LabelPositionStyles {
   /** CSS position property */
@@ -78,12 +148,24 @@ interface LabelPositionStyles {
  * - Configurable label placement (n, s, e, w, nw, ne, sw, se)
  * - Touch and mouse interaction support
  * - Smooth animations and transitions
- * - Customizable styling
+ * - Customizable styling through CSS variables
  * 
- * @fires {CustomEvent} change - Fired when the selected value changes. Event detail contains: { index, value, icon }
- * @fires {CustomEvent} start - Fired when dragging starts. Event detail contains: { index }
- * @fires {CustomEvent} drag - Fired during dragging. Event detail contains: { index }
- * @fires {CustomEvent} end - Fired when dragging ends. Event detail contains: { index }
+ * CSS Variables:
+ * - --primary-color: Main color for active elements (default: #3b82f6)
+ * - --primary-hover: Color for hover states (default: #2563eb)
+ * - --thumb-size: Size of the thumb element (default: 40px)
+ * - --rail-width: Width of the slider rail (default: 4px)
+ * 
+ * @fires {CustomEvent} change - Fired when the selected value changes
+ * @fires {CustomEvent} start - Fired when dragging starts
+ * @fires {CustomEvent} drag - Fired during dragging
+ * @fires {CustomEvent} end - Fired when dragging ends
+ * 
+ * Event Details:
+ * - change: { index: number, value: string, icon: string }
+ * - start: { index: number }
+ * - drag: { index: number }
+ * - end: { index: number }
  */
 export class SlideSelector extends HTMLElement {
   // Private properties
