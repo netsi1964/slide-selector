@@ -1,0 +1,14 @@
+{
+  "name": "@netsi1964/slide-selector",
+  "version": "1.0.0",
+  "exports": "./src/slide-selector.ts",
+  "publish": {
+    "include": [
+      "LICENSE",
+      "README.md",
+      "src/**/*.ts",
+      "src/**/*.css",
+      "demo/**/*"
+    ]
+  }
+} 
