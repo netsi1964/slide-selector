@@ -1,6 +1,6 @@
 {
   "name": "@netsi1964/slide-selector",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "exports": "./src/slide-selector.ts",
   "publish": {
     "include": [
