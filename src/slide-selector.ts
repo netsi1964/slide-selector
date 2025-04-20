@@ -1,5 +1,3 @@
-import './style.css';
-
 /**
  * A customizable vertical slide selector web component with icon support.
  * 
@@ -570,8 +568,146 @@ export class SlideSelector extends HTMLElement {
   private render(): void {
     if (!this.shadowRoot) return;
 
-    const style = `/* Your existing styles */`;
-    const html = `/* Your existing HTML template */`;
+    const style = `
+      :host {
+        --primary-color: #3b82f6;
+        --primary-hover: #2563eb;
+        --thumb-size: 40px;
+        --rail-width: 4px;
+        position: relative;
+        display: inline-block;
+        width: var(--thumb-size);
+        min-height: 200px;
+        user-select: none;
+      }
+
+      .rail {
+        position: absolute;
+        top: 20px;
+        bottom: 20px;
+        left: 50%;
+        width: var(--rail-width);
+        background: #e5e7eb;
+        border-radius: 2px;
+        transform: translateX(-50%);
+      }
+
+      .thumb {
+        position: absolute;
+        left: 50%;
+        width: var(--thumb-size);
+        height: var(--thumb-size);
+        background: white;
+        border: 2px solid var(--primary-color);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        transition: border-color 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .thumb:hover {
+        border-color: var(--primary-hover);
+      }
+
+      .thumb.dragging {
+        border-color: var(--primary-hover);
+        background: var(--primary-hover);
+        color: white;
+      }
+
+      .thumb-pulse {
+        animation: pulse 1.5s infinite;
+      }
+
+      .label {
+        position: absolute;
+        background: white;
+        color: var(--primary-color);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+        z-index: 100;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border: 1px solid #e5e7eb;
+      }
+
+      .thumb:hover + .label {
+        opacity: 1;
+      }
+
+      .dots {
+        position: absolute;
+        top: 20px;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        pointer-events: none;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        background: #e5e7eb;
+        border-radius: 50%;
+        transform: translateX(-50%);
+        transition: background-color 0.2s ease;
+        cursor: pointer;
+        pointer-events: auto;
+      }
+
+      .dot:hover {
+        background: var(--primary-hover);
+      }
+
+      .dot.active {
+        background: var(--primary-color);
+      }
+
+      .dot-icon {
+        display: none;
+        font-size: 12px;
+        color: #6b7280;
+      }
+
+      :host([show-icons="true"]) .dot-icon {
+        display: inline-block;
+      }
+
+      @keyframes pulse {
+        0%, 100% {
+          transform: translate(-50%, -50%) scale(1);
+        }
+        50% {
+          transform: translate(-50%, -50%) scale(1.05);
+        }
+      }
+    `;
+
+    const html = `
+      <div class="rail"></div>
+      <div class="dots">
+        ${this.steps.map((_, i) => `
+          <div class="dot ${i === this.index ? 'active' : ''}" data-index="${i}">
+            ${this.showIcons ? `<i class="fas fa-${this.steps[i].icon} dot-icon"></i>` : ''}
+          </div>
+        `).join('')}
+      </div>
+      <div class="thumb">
+        ${this.showIcons ? `<i class="fas fa-${this.steps[this.index]?.icon} thumb-icon"></i>` : ''}
+      </div>
+      <div class="label">${this.steps[this.index]?.value || ''}</div>
+    `;
     
     this.shadowRoot.innerHTML = `<style>${style}</style>${html}`;
 
