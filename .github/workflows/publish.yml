@@ -16,16 +16,4 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
-      - name: Create Deno configuration
-        run: |
-          echo '{
-            "name": "@netsi1964/slide-selector",
-            "version": "1.0.10",
-            "exports": "./src/slide-selector.ts",
-            "compilerOptions": {
-              "lib": ["dom", "dom.iterable", "deno.window"],
-              "strict": true,
-              "experimentalDecorators": true
-            }
-          }' > deno.json
-      - run: deno publish --allow-dirty 
+      - run: deno publish 

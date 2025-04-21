@@ -1,0 +1,10 @@
+{
+  "name": "@netsi1964/slide-selector",
+  "version": "1.0.11",
+  "exports": "./src/slide-selector.ts",
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "deno.window"],
+    "strict": true,
+    "experimentalDecorators": true
+  }
+} 
