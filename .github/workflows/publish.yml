@@ -16,4 +16,16 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
+      - name: Check TypeScript
+        run: |
+          echo '{
+            "compilerOptions": {
+              "lib": ["dom", "dom.iterable", "esnext"],
+              "target": "esnext",
+              "module": "esnext",
+              "strict": true,
+              "skipLibCheck": true,
+              "experimentalDecorators": true
+            }
+          }' > deno.json
       - run: deno publish 
