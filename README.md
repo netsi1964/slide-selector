@@ -34,7 +34,7 @@ You can use the component directly from a CDN:
 
 <!-- Import the component -->
 <script type="module">
-  import { SlideSelector } from 'https://cdn.jsdelivr.net/npm/@netsi1964/slide-selector@1.0.2/+esm';
+  import { SlideSelector } from 'https://cdn.jsdelivr.net/npm/@netsi1964/slide-selector@1.0.14/+esm';
   
   // The component is automatically registered as 'slide-selector'
 </script>
@@ -56,7 +56,7 @@ You can use the component directly from a CDN:
 
 ### Deno
 ```typescript
-import { SlideSelector } from "jsr:@netsi1964/slide-selector@1.0.2";
+import { SlideSelector } from "jsr:@netsi1964/slide-selector@1.0.14";
 ```
 
 ## Usage
