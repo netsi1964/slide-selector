@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: '20.x'
           registry-url: 'https://npm.jsr.io'
-      - run: npm install
-      - run: npm publish --provenance --access=public
+      - run: npm ci
+      - run: npx jsr publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.JSR_TOKEN }} 
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
