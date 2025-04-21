@@ -1,14 +1,17 @@
 {
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "target": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "node",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "./dist",
+    "experimentalDecorators": true
   },
   "include": ["src/**/*"],
-  "exclude": ["src/**/*.test.ts", "src/**/*.spec.ts"]
+  "exclude": ["node_modules"]
 } 
