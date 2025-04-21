@@ -7,11 +7,15 @@
       "README.md",
       "LICENSE",
       "src/**/*.ts",
-      "jsr.json"
+      "jsr.json",
+      "tsconfig.jsr.json"
     ],
     "exclude": [
       "**/*.test.ts",
       "**/*.spec.ts"
     ]
+  },
+  "compilerOptions": {
+    "extends": "./tsconfig.jsr.json"
   }
 } 
