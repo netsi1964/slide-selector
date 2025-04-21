@@ -16,9 +16,12 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
-      - name: Check TypeScript
+      - name: Create Deno configuration
         run: |
           echo '{
+            "name": "@netsi1964/slide-selector",
+            "version": "1.0.9",
+            "exports": "./src/slide-selector.ts",
             "compilerOptions": {
               "lib": ["dom", "dom.iterable", "esnext"],
               "target": "esnext",
