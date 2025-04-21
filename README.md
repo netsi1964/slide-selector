@@ -4,7 +4,7 @@ A customizable slide selector web component with icon support and configurable o
 
 ## Demo
 
-![Slide Selector Demo](https://raw.githubusercontent.com/netsi1964/slide-selector/main/demo/screenshot.png)
+![Slide Selector Demo](demo/screenshoot.png)
 
 Try it out on CodePen: [Slide Selector Demo](https://codepen.io/netsi1964/full/xbbwrbR)
 
