@@ -1,7 +1,7 @@
 {
     "name": "@netsi1964/slide-selector",
     "version": "1.0.0",
-    "description": "A powerful and customizable slide selector web component featuring intuitive navigation, icon support, and extensive configuration options. Perfect for creating interactive slideshows, carousels, and image galleries in modern web applications.",
+    "description": "An intuitive slide selector web component for modern apps. Offers smooth navigation, icon support, and flexible configuration for a seamless user experience.",
     "type": "module",
     "exports": "./src/slide-selector.ts",
     "files": [
