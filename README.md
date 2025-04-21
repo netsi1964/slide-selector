@@ -2,6 +2,12 @@
 
 A customizable slide selector web component with icon support and configurable options. Built with TypeScript and modern web standards.
 
+## Demo
+
+![Slide Selector Demo](https://raw.githubusercontent.com/netsi1964/slide-selector/main/demo/screenshot.png)
+
+Try it out on CodePen: [Slide Selector Demo](https://codepen.io/netsi1964/full/xbbwrbR)
+
 ## Features
 
 - Vertical slide selector with customizable steps
@@ -112,9 +118,33 @@ npm run dev
 npm run build
 ```
 
-## License
+## Release Procedure
 
-MIT
+To publish a new version of the package:
 
-## Test Update
-This is a test update to demonstrate the publishing process to JSR.io - Updated on: $(date)
+1. Update version numbers in both configuration files:
+   ```bash
+   # In package.json
+   "version": "x.y.z"
+   
+   # In deno.json
+   "version": "x.y.z"
+   ```
+
+2. Commit the version changes:
+   ```bash
+   git add package.json deno.json
+   git commit -m "Bump version to x.y.z"
+   git push
+   ```
+
+3. Create and push a new tag to trigger the JSR publication:
+   ```bash
+   git tag vx.y.z
+   git push origin vx.y.z
+   ```
+
+4. The GitHub Action will automatically publish to JSR when the tag is pushed.
+
+5. After JSR publication is successful, publish to npm:
+   ```

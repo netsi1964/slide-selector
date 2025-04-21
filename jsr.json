@@ -8,7 +8,8 @@
       "LICENSE",
       "src/**/*.ts",
       "jsr.json",
-      "tsconfig.jsr.json"
+      "tsconfig.jsr.json",
+      "demo/**/*"
     ],
     "exclude": [
       "**/*.test.ts",
