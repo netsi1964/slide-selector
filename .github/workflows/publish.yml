@@ -13,9 +13,7 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: denoland/setup-deno@v1
         with:
-          node-version: '20.x'
-      - run: npm ci
-      - run: npm install -g @jsrjs/cli
-      - run: jsr publish 
+          deno-version: v1.x
+      - run: deno publish 
