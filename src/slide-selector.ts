@@ -7,7 +7,7 @@
  * ![Slide Selector Demo](https://raw.githubusercontent.com/netsi1964/slide-selector/main/demo/screenshoot.png)
  * 
  * ## Demo
- * Try it out on CodePen: [Slide Selector Demo](https://codepen.io/netsi1964/pen/JjwRBbW)
+ * Try it out on CodePen: [Slide Selector Demo](https://codepen.io/netsi1964/full/xbbwrbR)
  * 
  * @example Basic Usage
  * ```html
