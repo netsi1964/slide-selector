@@ -6,6 +6,9 @@
  * 
  * ![Slide Selector Demo](https://raw.githubusercontent.com/netsi1964/slide-selector/main/demo/screenshoot.png)
  * 
+ * ## Demo
+ * Try it out on CodePen: [Slide Selector Demo](https://codepen.io/netsi1964/pen/JjwRBbW)
+ * 
  * @example Basic Usage
  * ```html
  * <slide-selector
