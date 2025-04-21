@@ -16,5 +16,5 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
-      - run: deno install -A -r https://jsr.io/jsr@0.9.1/cli.ts
+      - run: deno install -A jsr@0.9 --registry https://registry.jsr.io
       - run: jsr publish 
