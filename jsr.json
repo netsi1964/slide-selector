@@ -4,11 +4,14 @@
   "exports": "./src/slide-selector.ts",
   "publish": {
     "include": [
-      "LICENSE",
       "README.md",
+      "LICENSE",
       "src/**/*.ts",
-      "src/**/*.css",
-      "demo/**/*"
+      "jsr.json"
+    ],
+    "exclude": [
+      "**/*.test.ts",
+      "**/*.spec.ts"
     ]
   }
 } 
