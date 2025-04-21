@@ -1,6 +1,6 @@
 {
     "name": "@netsi1964/slide-selector",
-    "version": "1.0.12",
+    "version": "1.0.13",
     "description": "An intuitive slide selector web component for modern apps. Offers smooth navigation, icon support, and flexible configuration for a seamless user experience.",
     "type": "module",
     "exports": "./src/slide-selector.ts",
