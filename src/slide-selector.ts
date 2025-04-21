@@ -4,6 +4,8 @@
  * This component provides a vertical slider with customizable steps, each having a value and an associated icon.
  * It supports touch and mouse interactions, smooth animations, and configurable label placement.
  * 
+ * ![Slide Selector Demo](https://raw.githubusercontent.com/netsi1964/slide-selector/main/demo/screenshoot.png)
+ * 
  * @example Basic Usage
  * ```html
  * <slide-selector
@@ -16,6 +18,39 @@
  *   show-icons="true"
  *   value="Medium">
  * </slide-selector>
+ * ```
+ * 
+ * @example Installation
+ * ```bash
+ * # Using npm
+ * npm install @netsi1964/slide-selector
+ * 
+ * # Using yarn
+ * yarn add @netsi1964/slide-selector
+ * 
+ * # Using pnpm
+ * pnpm add @netsi1964/slide-selector
+ * 
+ * # Using JSR
+ * npx jsr add @netsi1964/slide-selector
+ * ```
+ * 
+ * @example CDN Usage
+ * ```html
+ * <!-- Add Font Awesome for icons -->
+ * <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+ * 
+ * <!-- Import from JSR CDN -->
+ * <script type="module">
+ *   import { SlideSelector } from "https://cdn.jsr.io/@netsi1964/slide-selector/latest";
+ *   // The component is automatically registered as <slide-selector>
+ * </script>
+ * 
+ * <!-- Or import from unpkg -->
+ * <script type="module">
+ *   import { SlideSelector } from "https://unpkg.com/@netsi1964/slide-selector/dist/slide-selector.js";
+ *   // The component is automatically registered as <slide-selector>
+ * </script>
  * ```
  * 
  * @example Styling
