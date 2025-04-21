@@ -20,15 +20,12 @@ jobs:
         run: |
           echo '{
             "name": "@netsi1964/slide-selector",
-            "version": "1.0.9",
+            "version": "1.0.10",
             "exports": "./src/slide-selector.ts",
             "compilerOptions": {
-              "lib": ["dom", "dom.iterable", "esnext"],
-              "target": "esnext",
-              "module": "esnext",
+              "lib": ["dom", "dom.iterable", "deno.window"],
               "strict": true,
-              "skipLibCheck": true,
               "experimentalDecorators": true
             }
           }' > deno.json
-      - run: deno publish 
+      - run: deno publish --allow-dirty 
